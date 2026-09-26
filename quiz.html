@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guidr · Take the 60-sec travel quiz</title>
+<meta name="description" content="Guidr is the travel app that learns how you travel. Take a 60-second quiz, help us build it, and get 1 month free when Guidr launches.">
+<link rel="canonical" href="https://guidrtravel-cmd.github.io/waitlist/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=1">
+<meta name="theme-color" content="#0B43B5">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Guidr">
+<meta property="og:url" content="https://guidrtravel-cmd.github.io/waitlist/">
+<meta property="og:title" content="Guidr · The travel app that learns how you travel">
+<meta property="og:description" content="Take a 60-second quiz and get 1 month of Guidr free when it launches on iOS and Android.">
+<meta property="og:image" content="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/og-v4.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@guidrtravel">
+<meta name="twitter:image" content="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/og-v4.jpg">
+<link rel="preconnect" href="https://ohrgavamspzzkzbopxrm.supabase.co" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--w80:rgba(255,255,255,.84);--w60:rgba(255,255,255,.64);--sky:#0B43B5;--orange:#FF8A2A}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--sky);overscroll-behavior-y:none}
+body{color:#fff;font:400 16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+
+/* ---------- stage (same photo background as before) ---------- */
+.stage{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;overflow:clip}
+.bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:linear-gradient(#0D4FC4,#1E78E6 60%,#3FA3F0)}
+.bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%;display:block;opacity:0;transition:opacity .8s ease}
+.bg img.ready{opacity:1}
+.shade{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to top,rgba(2,24,58,.42) 0%,rgba(2,24,58,0) 14%)}
+.page{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 24px}
+
+/* ---------- glass v2 (same look as the live site) ---------- */
+.glass{position:relative;isolation:isolate;
+  background:radial-gradient(130% 90% at 15% -10%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 55%),linear-gradient(180deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.07) 60%,rgba(255,255,255,.11) 100%);
+  -webkit-backdrop-filter:blur(26px) saturate(1.2) brightness(1.03);backdrop-filter:blur(26px) saturate(1.2) brightness(1.03);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.14),inset 0 0 22px 2px rgba(255,255,255,.14),inset 0 10px 24px -14px rgba(255,255,255,.45),0 1px 2px rgba(3,20,60,.10),0 26px 56px -24px rgba(3,20,60,.55)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;padding:1.25px;
+  background:conic-gradient(from 200deg at 50% 50%,rgba(255,255,255,.95) 0deg,rgba(186,222,255,.55) 30deg,rgba(255,206,236,.40) 55deg,rgba(255,255,255,.12) 95deg,rgba(255,255,255,.06) 160deg,rgba(206,255,236,.30) 215deg,rgba(255,232,196,.38) 250deg,rgba(255,255,255,.75) 310deg,rgba(255,255,255,.95) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glass.sm{-webkit-backdrop-filter:blur(14px) saturate(1.2) brightness(1.04);backdrop-filter:blur(14px) saturate(1.2) brightness(1.04);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.2),inset 0 0 0 1px rgba(255,255,255,.14),inset 0 0 12px 1px rgba(255,255,255,.14),0 1px 2px rgba(3,20,60,.10),0 10px 24px -12px rgba(3,20,60,.5)}
+.glass.sm::before{padding:1px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:rgba(20,70,160,.78)}}
+
+/* ---------- nav ---------- */
+nav{width:100%;max-width:1120px;height:44px;margin-top:22px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;text-decoration:none;height:44px}
+.brand .word{height:46px;width:80px;display:block;margin-top:8px;filter:drop-shadow(0 2px 10px rgba(3,20,60,.25))}
+.x{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:transform .2s}
+.x:hover{transform:translateY(-1px)}
+.x svg{width:16px;height:16px;fill:currentColor;display:block}
+
+/* ---------- hero ---------- */
+.hero{flex:1;width:100%;max-width:1120px;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px 0 calc(max(20svh,12vw) + 20px)}
+.copy{display:flex;flex-direction:column;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 14px;border-radius:999px;font-size:11.5px;line-height:1.2;font-weight:600;letter-spacing:.17em;text-transform:uppercase}
+.led{flex:none;width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 3px rgba(255,154,61,.3);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(255,154,61,.06)}}
+h1{margin-top:20px;font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(46px,5.6vw,80px);line-height:.98;letter-spacing:-.022em;text-shadow:0 4px 30px rgba(3,24,70,.28)}
+h1 em{font-style:italic;padding-right:.06em;background:linear-gradient(95deg,#FFC37A 0%,#FF8A2A 55%,#FF6A00 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{margin-top:16px;max-width:560px;font-size:clamp(16px,1.35vw,18px);line-height:1.6;color:var(--w80);text-shadow:0 1px 12px rgba(3,24,70,.3)}
+.lede b{color:#FFC98F;font-weight:700}
+
+/* ---------- buttons ---------- */
+.cta{height:56px;padding:0 30px;border-radius:28px;border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(160deg,#FFB064 0%,#FF8A2A 45%,#FF6A00 100%);color:#fff;font-size:16.5px;font-weight:600;letter-spacing:-.01em;text-shadow:0 1px 2px rgba(120,40,0,.35);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(160,50,0,.25),0 10px 24px -8px rgba(255,106,0,.65);-webkit-appearance:none;appearance:none;outline:none;transition:transform .18s,filter .18s,opacity .18s}
+.cta:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.cta:active{transform:translateY(1px)}
+.cta:focus-visible{box-shadow:inset 0 0 0 2px #fff,0 10px 24px -8px rgba(255,106,0,.65)}
+.cta:disabled{opacity:.45;cursor:default;transform:none;filter:none}
+.start{margin-top:26px}
+.hint{margin-top:12px;font-size:13px;color:var(--w80);text-shadow:0 1px 10px rgba(3,24,70,.35)}
+
+/* ---------- quiz card ---------- */
+.card{width:100%;max-width:500px;margin:0 auto;padding:22px 24px 24px;border-radius:32px;text-align:left}
+.top{display:flex;align-items:center;gap:12px}
+.back{flex:none;width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);transition:background .2s,opacity .2s}
+.back:hover{background:rgba(255,255,255,.2)}
+.back[hidden]{display:grid;visibility:hidden}
+.back svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.bar{flex:1;height:8px;border-radius:4px;background:rgba(6,27,63,.28);box-shadow:inset 0 1px 2px rgba(3,20,60,.3);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#FFB064,#FF6A00);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.step{flex:none;min-width:44px;text-align:right;font-size:13px;font-weight:600;color:var(--w80);font-variant-numeric:tabular-nums}
+.screen{margin-top:20px}
+.screen.in{animation:slide .38s cubic-bezier(.2,.8,.25,1) both}
+.screen.in.rev{animation-name:slideback}
+@keyframes slide{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+@keyframes slideback{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+.q{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:31px;line-height:1.1;letter-spacing:-.012em}
+.q.long{font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.5;font-weight:500;color:var(--w80)}
+.q.long b{display:block;margin-top:10px;font-family:'Instrument Serif',Georgia,serif;font-size:30px;line-height:1.1;font-weight:400;color:#fff}
+.sub{margin-top:6px;font-size:13.5px;color:var(--w60)}
+.opts{margin-top:18px;display:grid;gap:9px}
+.opt{width:100%;min-height:52px;padding:12px 18px;border-radius:18px;border:0;cursor:pointer;text-align:left;font-size:15.5px;font-weight:500;line-height:1.35;display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.10);box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),inset 0 1px 0 rgba(255,255,255,.22);transition:background .18s,box-shadow .18s,transform .12s}
+.opt:hover{background:rgba(255,255,255,.18)}
+.opt:active{transform:scale(.985)}
+.opt:focus-visible{outline:none;box-shadow:inset 0 0 0 2px rgba(255,178,110,.95)}
+.opt.on{background:linear-gradient(135deg,rgba(255,176,100,.42),rgba(255,106,0,.30));box-shadow:inset 0 0 0 1.5px rgba(255,190,130,.95),0 6px 18px -8px rgba(255,106,0,.6)}
+.opt .tick{flex:none;margin-left:auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5);font-size:13px;font-weight:700}
+.opt.on .tick{background:#fff;color:#FF6A00;box-shadow:none}
+.opts.grid2{grid-template-columns:1fr 1fr}
+.next{margin-top:16px;width:100%}
+
+/* halfway + final screens */
+.center{text-align:center;padding:26px 0 14px}
+.big{font-size:54px;line-height:1}
+.center .q{margin-top:14px}
+.center .sub{font-size:15px;color:var(--w80)}
+.form{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.form input{width:100%;height:56px;padding:0 20px;border-radius:28px;border:0;outline:none;background:rgba(6,27,63,.30);color:#fff;font:inherit;font-size:16px;
+  box-shadow:inset 0 2px 6px rgba(3,20,60,.35),inset 0 0 0 1px rgba(255,255,255,.24);-webkit-appearance:none;appearance:none;transition:box-shadow .2s,background .2s}
+.form input::placeholder{color:rgba(255,255,255,.62)}
+.form input:focus{background:rgba(6,27,63,.38);box-shadow:inset 0 2px 6px rgba(3,20,60,.35),inset 0 0 0 2px rgba(255,178,110,.95)}
+.form .cta{width:100%}
+.fine{margin-top:12px;font-size:12.5px;color:var(--w60);text-align:center}
+.fine a{color:inherit}
+.msg{margin-top:12px;font-size:14px;font-weight:600;text-align:center;min-height:0}
+.msg:empty{display:none}
+.msg.err{color:#FFD2C4}
+.ghost{margin-top:12px;width:100%;height:50px;border-radius:25px;border:0;cursor:pointer;font-size:15px;font-weight:600;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);transition:background .2s}
+.ghost:hover{background:rgba(255,255,255,.2)}
+
+/* ---------- stores + footer links ---------- */
+.meta{margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.stores{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;font-size:14px;line-height:1;font-weight:600;text-shadow:0 1px 10px rgba(3,24,70,.35)}
+.stores .lbl{font-weight:500;color:var(--w80);letter-spacing:.02em}
+.store{display:inline-flex;align-items:center;gap:7px}
+.store svg{flex:none;width:17px;height:17px;fill:#fff;display:block}
+.legal{font-size:12.5px;color:var(--w80);text-shadow:0 1px 8px rgba(2,24,58,.5)}
+.legal a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+
+/* ---------- modes ---------- */
+body.quiz .copy,body.quiz .start,body.quiz .hint{display:none}
+body:not(.quiz) #card{display:none}
+
+.up{animation:up .9s cubic-bezier(.2,.7,.25,1) both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}.d5{animation-delay:.36s}.d6{animation-delay:.46s}
+
+@media (max-width:600px){
+  .page{padding:0 16px}
+  nav{margin-top:10px;height:40px}
+  .brand{height:40px}
+  .brand .word{height:36px;width:62px;margin-top:6px}
+  .x{width:40px;height:40px}
+  .hero{padding-top:18px;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+  body:not(.quiz) .hero{padding-bottom:calc(16svh + 10px)}
+  .pill{padding:7px 13px 7px 11px;font-size:10.5px;letter-spacing:.15em}
+  h1{margin-top:14px;font-size:clamp(40px,11.5vw,50px);line-height:1}
+  .lede{margin-top:12px;font-size:15px;max-width:340px}
+  .start{margin-top:22px;width:100%;max-width:340px}
+  .card{padding:16px 16px 18px;border-radius:26px}
+  .screen{margin-top:16px}
+  .q{font-size:27px}
+  .q.long{font-size:15px}
+  .q.long b{font-size:25px}
+  .opts{margin-top:14px;gap:8px}
+  .opt{min-height:48px;padding:10px 15px;font-size:15px;border-radius:16px}
+  .meta{margin-top:18px}
+  .stores{font-size:13px;gap:8px 14px}
+  .store svg{width:15px;height:15px}
+}
+@media (max-width:380px){.opts.grid2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="bg"><img id="bgimg" alt="" decoding="async" fetchpriority="high"
+  src="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg"
+  srcset="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4-m.jpg 1915w, https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg 3830w"
+  sizes="(max-aspect-ratio: 1643/1000) 200vh, 100vw"></div>
+<div class="shade"></div>
+
+<div class="page">
+  <nav class="up d1">
+    <a class="brand" href="./" aria-label="Guidr home">
+      <svg class="word" role="img" aria-label="Guidr" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 292"><path fill="#fff" fill-rule="evenodd" d="M271 64Q268 64 266 65Q263 66 262 68Q260 70 259 72Q258 74 258 77Q258 80 260 82Q260 84 262 85Q263 86 265 88Q268 88 270 88Q272 88 274 88Q276 87 278 86Q280 84 281 82Q282 79 283 76Q283 74 282 71Q280 68 279 67Q278 66 276 65Q274 64 271 64ZM4 117Q2 126 2 134Q2 142 3 145Q4 148 5 153Q6 158 8 162Q10 166 13 169Q15 172 19 175Q22 178 27 181Q32 183 35 184Q38 185 47 185Q56 186 59 185Q63 184 68 182Q72 180 80 176Q88 171 98 160Q108 150 109 150Q109 150 105 166Q100 181 100 182Q98 183 84 190Q70 198 60 206Q50 213 42 220Q34 228 31 232Q28 236 26 240Q24 244 22 249Q21 254 21 260Q20 265 21 268Q22 272 24 275Q25 278 28 282Q31 285 34 286Q36 288 39 289Q42 290 46 290Q50 290 56 289Q61 288 65 286Q69 284 74 280Q78 276 83 271Q88 266 92 259Q96 253 102 243Q106 232 110 224Q113 214 117 200Q121 186 127 181Q134 176 138 171Q144 166 144 166Q144 166 144 171Q144 176 146 178Q146 182 148 184Q150 186 154 187Q158 188 162 188Q166 188 168 186Q172 184 176 180Q182 175 184 172Q186 168 187 172Q187 174 188 178Q189 181 191 184Q194 186 196 187Q198 188 201 188Q204 188 208 187Q213 186 216 184Q218 182 224 176Q229 170 230 176Q232 180 234 184Q236 186 239 188Q242 188 245 188Q248 188 251 188Q254 187 257 185Q260 182 267 176Q274 168 276 173Q277 177 279 180Q280 182 282 184Q284 186 287 187Q290 188 295 188Q300 189 305 188Q310 186 314 184Q319 181 323 177Q328 172 328 172Q328 172 329 176Q330 178 332 182Q334 186 337 187Q339 188 343 188Q346 189 350 188Q353 188 356 186Q360 184 365 178Q371 172 377 162Q384 152 391 138Q398 124 405 125Q412 125 412 126Q413 128 408 137Q402 147 401 151Q400 155 399 158Q398 162 398 167Q398 172 399 176Q400 180 402 182Q403 184 405 185Q407 186 411 188Q416 189 420 189Q424 188 428 187Q434 185 440 180Q446 176 453 169Q460 162 470 150Q480 138 486 146Q491 153 493 153Q494 154 495 153Q496 152 501 125Q506 98 505 98Q504 97 503 97Q502 96 478 108Q453 120 452 121Q451 122 452 124Q452 125 460 128Q469 130 470 131Q470 132 464 138Q458 145 450 153Q442 160 437 164Q432 168 428 168Q425 168 423 166Q422 165 421 162Q420 159 422 153Q424 146 429 134Q435 122 434 118Q434 114 433 112Q432 111 429 110Q427 109 416 109Q406 108 406 108Q405 108 406 104Q407 101 407 98Q407 96 406 93Q404 90 402 90Q400 88 397 89Q394 89 390 92Q386 95 384 99Q382 102 382 108Q382 113 384 115Q384 117 386 119Q388 121 386 128Q382 134 378 142Q374 149 370 155Q366 160 362 164Q358 168 358 168Q356 168 354 168Q352 168 350 166Q348 163 348 160Q348 158 351 150Q353 142 376 87Q400 32 400 30Q400 28 398 26Q397 24 395 22Q393 22 390 22Q388 22 385 22Q383 24 381 26Q378 30 362 69Q344 109 344 109Q343 110 341 107Q338 104 336 102Q332 100 328 100Q324 99 320 99Q318 100 314 100Q311 102 306 104Q300 108 296 112Q292 116 288 120Q285 125 282 131Q279 137 278 142Q276 148 272 153Q269 158 264 162Q260 166 256 166Q254 166 252 165Q251 164 251 162Q250 160 252 152Q254 145 262 127Q270 109 270 107Q270 106 268 104Q267 103 266 102Q264 102 260 102Q256 102 252 104Q248 106 240 128Q232 149 229 153Q226 158 222 161Q218 165 217 166Q216 166 214 166Q212 166 210 165Q209 164 209 162Q208 160 211 150Q213 142 220 125Q226 109 226 107Q226 106 224 104Q221 102 216 102Q212 102 208 105Q204 107 197 127Q190 146 184 154Q180 161 176 164Q172 166 170 166Q169 166 168 166Q167 164 166 163Q166 162 166 160Q166 157 168 150Q170 143 177 126Q184 109 184 107Q184 104 181 103Q178 102 174 102Q170 102 166 104Q163 106 156 126Q148 144 144 150Q139 156 134 160Q128 165 128 165Q127 165 127 164Q126 164 132 146Q137 128 141 118Q146 108 145 107Q145 106 144 105Q143 104 138 104Q133 104 128 106Q124 108 122 110Q120 112 116 118Q112 124 107 130Q102 137 97 142Q92 146 88 149Q83 152 79 154Q74 156 69 158Q64 159 60 159Q56 158 53 158Q50 157 48 156Q46 154 42 150Q40 147 38 143Q36 138 36 136Q35 133 35 127Q35 120 36 116Q36 112 39 104Q42 96 46 87Q50 78 55 70Q60 62 67 54Q73 46 80 40Q88 34 92 31Q95 29 101 26Q106 24 108 24Q110 23 115 23Q120 23 122 24Q124 24 126 26Q128 28 129 32Q130 35 130 38Q130 40 130 44Q128 48 126 52Q124 56 118 62Q112 68 109 70Q106 72 100 74Q96 76 95 76Q94 77 94 80Q94 82 96 84Q98 86 100 88Q102 90 106 92Q108 92 112 92Q114 92 118 92Q122 90 126 88Q130 85 136 79Q142 72 146 63Q151 54 152 48Q154 41 154 35Q154 30 153 26Q152 22 150 18Q148 14 144 11Q142 8 137 6Q132 4 128 3Q125 2 118 2Q112 2 102 5Q93 7 85 11Q76 15 67 22Q57 29 49 37Q42 44 34 54Q27 64 21 75Q14 86 10 98Q6 108 4 117ZM90 203Q94 202 94 203Q94 204 91 213Q88 222 83 231Q78 240 74 246Q70 253 66 257Q62 262 59 264Q56 266 54 266Q52 266 50 266Q47 266 46 266Q44 266 43 264Q42 263 41 261Q40 260 40 256Q40 252 42 248Q44 242 47 239Q49 236 54 231Q59 226 64 222Q68 218 78 211Q88 204 90 203ZM324 118Q328 118 330 120Q332 122 334 124Q334 126 334 131Q334 136 332 142Q330 149 328 154Q324 159 321 162Q318 166 314 168Q310 170 306 169Q302 168 300 167Q298 165 297 161Q296 157 296 153Q296 148 298 144Q299 140 302 134Q306 128 308 125Q312 122 315 120Q319 118 324 118Z"/></svg>
+    </a>
+    <a class="x glass sm" href="https://x.com/guidrtravel" target="_blank" rel="noopener" aria-label="Guidr on X">
+      <svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.2L24 22.8h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.2h7.6l5.2 6.9zm-1.3 19.4h2L6.5 3.3H4.3z"/></svg>
+    </a>
+  </nav>
+
+  <main class="hero">
+    <section class="copy">
+      <span class="pill glass sm up d2"><span class="led"></span>60-second quiz</span>
+      <h1 class="up d3">The travel app that learns <em>how you travel.</em></h1>
+      <p class="lede up d4">Help us build it. Take a 60-sec quiz and get <b>1 month free</b> when Guidr launches.</p>
+    </section>
+    <button class="cta start up d5" id="startBtn" type="button">Start the quiz →</button>
+    <p class="hint up d5" id="hint">12 quick taps · no signup until the end</p>
+
+    <section class="card glass" id="card" aria-live="polite">
+      <div class="top">
+        <button class="back" id="backBtn" type="button" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+        <span class="step" id="stepTxt"></span>
+      </div>
+      <div class="screen" id="screen"></div>
+    </section>
+
+    <div class="meta up d6">
+      <div class="stores">
+        <span class="lbl">Coming to</span>
+        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.5c.03-2.6 2.12-3.85 2.21-3.91-1.2-1.77-3.08-2.01-3.75-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.27 3.13-2.53.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.6c.71-.87 1.19-2.07 1.06-3.27-1.02.04-2.27.68-3.01 1.54-.66.76-1.24 1.99-1.09 3.16 1.14.09 2.31-.58 3.04-1.43"/></svg>App Store</span>
+        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-1.078-.171zm0 2.067l-11.16 11.095c.353.076.729.031 1.066-.16l13.297-7.541z"/></svg>Google Play</span>
+      </div>
+      <p class="legal"><a href="privacy.html">Privacy</a> · <a href="https://x.com/guidrtravel" target="_blank" rel="noopener">@guidrtravel</a></p>
+    </div>
+  </main>
+</div>
+</div>
+
+<script>
+(function(){ var img=document.getElementById('bgimg');
+  function ok(){img.classList.add('ready');}
+  if(img.complete&&img.naturalWidth)ok();else img.addEventListener('load',ok,{once:true});
+})();
+</script>
+<script>
+/* ============================================================
+   Guidr survey. Backend: Supabase project "wishlist website-guidr".
+   The page only calls join_waitlist(p_email, p_source, p_referrer, p_lang, p_tz, p_answers).
+   Answers are kept in the browser (localStorage) while people go through the quiz,
+   and saved together with the email on the last screen.
+   To change a question: edit QUESTIONS below. Keep the "id" values stable once live,
+   they are the keys in the answers column.
+   ============================================================ */
+var SUPA = 'https://ohrgavamspzzkzbopxrm.supabase.co';
+var KEY  = 'sb_publishable_jfESc0pJkst9R_UoWXhjLA_7i1lrLUd';
+var STORE = 'guidr_quiz_v1';
+var HALFWAY_AFTER = 'style';
+
+var QUESTIONS = [
+  { id:'vibe', q:'Dream trip vibe?', opts:[
+    ['beach','🏝️ Beach and chill'],['city','🌆 City hopping'],['food','🍜 Food trip'],['adventure','🧗 Adventure'],['gems','🗺️ Hidden gems'] ]},
+  { id:'with', q:'Who do you travel with most?', grid:true, opts:[
+    ['solo','🎒 Solo'],['partner','💑 Partner'],['friends','👯 Friends'],['family','👨‍👩‍👧 Family'] ]},
+  { id:'age', q:'How old are you?', grid:true, opts:[
+    ['u16','Under 16'],['16-18','16 to 18'],['19-24','19 to 24'],['25-34','25 to 34'],['35+','35+'] ]},
+  { id:'discover', q:'Where do you find places to go?', sub:'Pick all that apply', multi:true, grid:true, opts:[
+    ['tiktok','TikTok'],['instagram','Instagram'],['maps','Google Maps'],['reddit','Reddit'],['chatgpt','ChatGPT'],['youtube','YouTube'],['friends','Friends'],['blogs','Blogs'] ]},
+  { id:'saved', q:'How many travel videos have you saved and never visited?', opts:[
+    ['0','0'],['1-19','1 to 19'],['20-99','20 to 99'],['100+','100+'],['lost','Lost count 💀'] ]},
+  { id:'style', q:'Your planning style?', opts:[
+    ['screenshots','📸 Screenshot hoarder'],['groupchat','💬 Group chat chaos'],['spreadsheet','📊 Spreadsheet boss'],['wing','🎲 I wing it'] ]},
+  { id:'pain', q:'Worst part of planning?', sub:'Pick up to 2', multi:true, max:2, opts:[
+    ['saves_to_plan','Turning saves into a real plan'],['friends_agree','Getting friends to agree'],['my_vibe','Finding places that are actually my vibe'],['logistics','Timing, distances, opening hours'],['budget','Budget'] ]},
+  { id:'time', q:'How long does planning one trip take you?', opts:[
+    ['u2h','Under 2 hours'],['2-5h','2 to 5 hours'],['5-10h','5 to 10 hours'],['10-20h','10 to 20 hours'],['20h+','20+ hours'] ]},
+  { id:'apps', q:'How many apps or tabs do you use to plan one trip?', grid:true, opts:[
+    ['1-3','1 to 3'],['4-6','4 to 6'],['7-10','7 to 10'],['tons','Too many to count'] ]},
+  { id:'ai', q:'Ever used ChatGPT or AI to plan a trip?', opts:[
+    ['great','Yes, it was great'],['off','Yes, but the plan was off'],['would','No, but I would'],['never','No, never'] ]},
+  { id:'pay', long:true, lead:'Imagine an app that turns everything you’ve saved into a full trip made for your taste, with routes, timings and your friends planning with you.', q:'How would you pay for it?', opts:[
+    ['free','Only if it’s free'],['trip','Pay per trip'],['monthly','Monthly'],['yearly','Yearly'] ]},
+  { id:'price', follow:true, grid:true, q:function(a){ return a.pay==='trip'?'Max you’d pay per trip?':a.pay==='monthly'?'Max you’d pay per month?':'Max you’d pay per year?'; },
+    opts:function(a){ return a.pay==='trip'?[['1','$1'],['3','$3'],['5','$5'],['8+','$8+']]
+                          :a.pay==='monthly'?[['2','$2'],['4','$4'],['7','$7'],['10+','$10+']]
+                          :[['19','$19'],['29','$29'],['49','$49'],['79+','$79+']]; } },
+  { id:'beta', q:'Want to test Guidr early, before it launches?', opts:[
+    ['yes','🙋 Yes, I’d test it'],['maybe','🤔 Maybe'],['no','No thanks'] ]}
+];
+var MAIN_COUNT = QUESTIONS.filter(function(q){return !q.follow;}).length;
+
+var $ = function(id){ return document.getElementById(id); };
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var state = load() || { a:{}, i:0, t0:0, done:false };
+
+function load(){ try{ var s=JSON.parse(localStorage.getItem(STORE)); return s && s.a ? s : null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
+
+/* The list of screens depends on the answers (price only shows if they'd pay). */
+function flow(){
+  var f=[];
+  QUESTIONS.forEach(function(q){
+    if (q.id==='price' && (!state.a.pay || state.a.pay==='free')) return;
+    f.push(q.id);
+    if (q.id===HALFWAY_AFTER) f.push('half');
+  });
+  f.push('email');
+  return f;
+}
+function qById(id){ for(var k=0;k<QUESTIONS.length;k++) if(QUESTIONS[k].id===id) return QUESTIONS[k]; }
+function val(x){ return typeof x==='function' ? x(state.a) : x; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+function progress(id){
+  var f=flow(), idx=f.indexOf(id), main=0;
+  for (var k=0;k<idx;k++){ var q=qById(f[k]); if(q && !q.follow) main++; }
+  var cur = qById(id);
+  var n = cur && cur.follow ? main : main+1;
+  $('stepTxt').textContent = cur ? n+' / '+MAIN_COUNT : '';
+  $('barFill').style.width = (id==='email' ? 100 : Math.round((main / MAIN_COUNT)*100)) + '%';
+}
+
+function render(dir){
+  var f=flow();
+  if (state.i>=f.length) state.i=f.length-1;
+  if (state.i<0) state.i=0;
+  var id=f[state.i], el=$('screen');
+  $('backBtn').hidden = state.i===0;
+  progress(id);
+  el.className='screen';
+  if (id==='half') el.innerHTML = halfHTML();
+  else if (id==='email') el.innerHTML = emailHTML();
+  else el.innerHTML = questionHTML(qById(id));
+  void el.offsetWidth;
+  el.className='screen in'+(dir<0?' rev':'');
+  wire(id);
+  save();
+}
+
+function questionHTML(q){
+  var opts=val(q.opts), sel=state.a[q.id], multi=!!q.multi;
+  var h = q.long
+    ? '<h2 class="q long">'+esc(q.lead)+'<b>'+esc(val(q.q))+'</b></h2>'
+    : '<h2 class="q">'+esc(val(q.q))+'</h2>';
+  if (q.sub) h += '<p class="sub">'+esc(q.sub)+'</p>';
+  h += '<div class="opts'+(q.grid?' grid2':'')+'" role="'+(multi?'group':'radiogroup')+'">';
+  opts.forEach(function(o){
+    var on = multi ? (Array.isArray(sel)&&sel.indexOf(o[0])>-1) : sel===o[0];
+    h += '<button type="button" class="opt'+(on?' on':'')+'" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+esc(o[1])+(multi?'<span class="tick">'+(on?'✓':'')+'</span>':'')+'</button>';
+  });
+  h += '</div>';
+  if (multi) h += '<button type="button" class="cta next" id="nextBtn"'+((Array.isArray(sel)&&sel.length)?'':' disabled')+'>Next →</button>';
+  return h;
+}
+function halfHTML(){
+  var left = MAIN_COUNT - 6;
+  return '<div class="center"><div class="big">✈️</div><h2 class="q">Halfway there</h2><p class="sub">'+left+' more and your free month is locked in.</p></div>';
+}
+function emailHTML(){
+  return '<div class="center" style="padding-bottom:0"><div class="big">🎉</div><h2 class="q">You’re done</h2>'+
+    '<p class="sub">Drop your email and get <b style="color:#FFC98F">1 month free</b> when Guidr launches.</p></div>'+
+    '<form class="form" id="form" novalidate>'+
+      '<input type="email" id="email" placeholder="you@email.com" autocomplete="email" inputmode="email" aria-label="Email address" required>'+
+      '<button type="submit" class="cta" id="sendBtn">Claim my free month</button>'+
+    '</form>'+
+    '<p class="msg" id="msg" role="status"></p>'+
+    '<p class="fine">Your code is sent the day the app drops. No spam. <a href="privacy.html">Privacy</a></p>';
+}
+function doneHTML(already){
+  return '<div class="center"><div class="big">✅</div><h2 class="q">'+(already?'You’re already in':'You’re in')+'</h2>'+
+    '<p class="sub">Your free month is saved. We’ll email your code the day Guidr drops.</p></div>'+
+    '<button type="button" class="cta next" id="shareBtn">Send the quiz to a friend</button>'+
+    '<p class="msg" id="msg" role="status"></p>';
+}
+
+var halfTimer=null;
+function wire(id){
+  clearTimeout(halfTimer);
+  if (id==='half'){ halfTimer=setTimeout(function(){ go(1); }, 1500); return; }
+  if (id==='email'){
+    var input=$('email');
+    if (state.email) input.value=state.email;
+    $('form').addEventListener('submit', submit);
+    if (!('ontouchstart' in window)) setTimeout(function(){ input.focus(); }, 60);
+    return;
+  }
+  var q=qById(id);
+  Array.prototype.forEach.call(document.querySelectorAll('#screen .opt'), function(b){
+    b.addEventListener('click', function(){ pick(q, b.getAttribute('data-v'), b); });
+  });
+  var nb=$('nextBtn'); if (nb) nb.addEventListener('click', function(){ go(1); });
+}
+
+var busy=false;
+function pick(q, v, btn){
+  if (busy) return;
+  if (!state.t0) state.t0 = Date.now();
+  if (q.multi){
+    var arr = Array.isArray(state.a[q.id]) ? state.a[q.id].slice() : [];
+    var at = arr.indexOf(v);
+    if (at>-1) arr.splice(at,1);
+    else { if (q.max && arr.length>=q.max) arr.shift(); arr.push(v); }
+    state.a[q.id]=arr; save();
+    Array.prototype.forEach.call(document.querySelectorAll('#screen .opt'), function(b){
+      var on = arr.indexOf(b.getAttribute('data-v'))>-1;
+      b.classList.toggle('on',on); b.setAttribute('aria-pressed',on);
+      b.querySelector('.tick').textContent = on?'✓':'';
+    });
+    $('nextBtn').disabled = !arr.length;
+    return;
+  }
+  if (q.id==='pay' && state.a.pay!==v) delete state.a.price;
+  state.a[q.id]=v; save();
+  Array.prototype.forEach.call(document.querySelectorAll('#screen .opt'), function(b){
+    var on=b===btn; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on);
+  });
+  busy=true;
+  setTimeout(function(){ busy=false; go(1); }, reduced?60:220);
+}
+function go(d){ state.i+=d; render(d); }
+
+$('backBtn').addEventListener('click', function(){
+  var f=flow();
+  if (state.done) return;
+  if (state.i<=0) return;
+  state.i--;
+  if (f[state.i]==='half') state.i--;   // skip the auto-advancing halfway screen when going back
+  render(-1);
+});
+
+function say(kind, text){ var m=$('msg'); if(!m) return; m.className='msg'+(kind?' '+kind:''); m.textContent=text; }
+
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function submit(e){
+  e.preventDefault();
+  var input=$('email'), btn=$('sendBtn');
+  var email=input.value.trim().toLowerCase();
+  state.email=email; save();
+  if (!EMAIL_RE.test(email)){ say('err','Enter a valid email address.'); input.focus(); return; }
+  btn.disabled=true; btn.textContent='Saving…'; say('','');
+  send(email).then(function(res){
+    if (res && res.ok){
+      state.done=true; state.already = res.status==='already'; save();
+      showDone();
+    } else {
+      btn.disabled=false; btn.textContent='Claim my free month';
+      var e2 = res && res.error;
+      if (e2==='invalid_email') say('err','That email looks off. Double-check it?');
+      else if (e2==='disposable') say('err','Please use a real inbox, not a throwaway one.');
+      else if (e2==='rate_limited') say('err','Too many tries from here. Give it a few minutes.');
+      else say('err','Couldn’t save that. Check your connection and tap again, your answers are kept.');
+    }
+  });
+}
+
+function send(email){
+  var params=new URLSearchParams(location.search);
+  var src=(params.get('src')||params.get('utm_source')||'direct').toLowerCase();
+  var ref=''; try{ ref=document.referrer?new URL(document.referrer).hostname:''; }catch(e){}
+  var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
+  var answers={}; for (var k in state.a) answers[k]=state.a[k];
+  answers.v=1;
+  if (state.t0) answers.secs=Math.round((Date.now()-state.t0)/1000);
+  var body=JSON.stringify({ p_email:email, p_source:src, p_referrer:ref, p_lang:navigator.language||'', p_tz:tz, p_answers:answers });
+  var attempt=0;
+  function once(){
+    return fetch(SUPA+'/rest/v1/rpc/join_waitlist',{ method:'POST', headers:{ 'apikey':KEY, 'Content-Type':'application/json' }, body:body })
+      .then(function(r){ if(r.ok) return r.json(); throw new Error('http '+r.status); });
+  }
+  function run(){
+    return once().catch(function(err){
+      console.error('join_waitlist', err);
+      if (++attempt<3) return new Promise(function(ok){ setTimeout(ok, 700*attempt); }).then(run);
+      return null;
+    });
+  }
+  return run();
+}
+
+function showDone(){
+  $('barFill').style.width='100%'; $('stepTxt').textContent=''; $('backBtn').hidden=true;
+  var el=$('screen'); el.className='screen'; el.innerHTML=doneHTML(state.already); void el.offsetWidth; el.className='screen in';
+  $('shareBtn').addEventListener('click', function(){
+    var url=location.origin+location.pathname+'?src=friend';
+    var data={ title:'Guidr', text:'Take this 60-sec travel quiz and get 1 month of Guidr free', url:url };
+    if (navigator.share){ navigator.share(data).catch(function(){}); return; }
+    if (navigator.clipboard){ navigator.clipboard.writeText(url).then(function(){ say('','Link copied ✓'); }, function(){ say('', url); }); }
+    else say('', url);
+  });
+}
+
+function startQuiz(){
+  document.body.classList.add('quiz');
+  if (state.done){ showDone(); }
+  else render(1);
+  window.scrollTo(0,0);
+}
+$('startBtn').addEventListener('click', startQuiz);
+if (state.done) { $('startBtn').textContent='You’re in ✅'; $('hint').textContent='Your free month is saved'; }
+else if (Object.keys(state.a).length){ $('startBtn').textContent='Continue the quiz →'; $('hint').textContent='Your answers are saved'; }
+</script>
+</body>
+</html>
