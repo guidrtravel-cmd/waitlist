@@ -25,9 +25,7 @@
     html=html.replace("Drop your email to see it and get <b style=\"color:#FFC98F\">1 month free</b> when Guidr launches.", "Enter your email to reserve your spot and get <b style=\"color:#FFC98F\">1 month free</b> when Guidr launches.");
     html=html.replace("<button type=\"submit\" class=\"cta\" id=\"sendBtn\">Show my type + free month</button>", "<button type=\"submit\" class=\"cta\" id=\"sendBtn\">Reserve my free month</button>");
     html=html.replace("btn.textContent='Show my type + free month';", "btn.textContent='Reserve my free month';");
-    html=html.replace('Your travel type is ready','You’re on the list');
-    html=html.replace('Send it to a friend','Share Guidr');
-    html=html.replace('Your free month code arrives the day Guidr drops.','Guidr will turn your saved places into a trip plan with routes, timings, and places that fit your style. Your free-month code arrives by email when the app launches.');
+    html=html.replace(/function doneHTML\(already\)\{[\s\S]*?\n\}\n\nvar halfTimer/, "function doneHTML(already){\n  return '<div class=\"center\"><div class=\"big\">🎉</div><div class=\"done-kicker\">You’re on the list</div><div class=\"done-title\">Guidr will do the planning.</div><p class=\"done-copy\">We’ll turn the places you save into a trip that fits you, with routes, timings, and the best stops in the right order.</p><p class=\"sub\" style=\"margin-top:14px\"><b style=\"color:#FFC98F\">Your 1-month-free code is reserved.</b> We’ll email it when Guidr launches.</p></div>'+'<button type=\"button\" class=\"cta next\" id=\"shareBtn\">Share Guidr</button>'+'<p class=\"msg\" id=\"msg\" role=\"status\"></p>'\n}\n\nvar halfTimer");
     document.open();document.write(html);document.close();
   }).catch(function(){document.body.textContent='Guidr is loading. Please refresh.';});
 })();
