@@ -11,30 +11,15 @@ fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602
   .then(r=>r.text())
   .then(html=>{
     const polish=`
-/* Above-the-fold layout pass: keep the whole signup moment visible */
-.hero{
-  padding:8px 0 34px!important;
-}
+/* Above-the-fold layout pass */
+.hero{padding:8px 0 34px!important}
 .card{margin-top:20px!important;padding-top:26px!important;padding-bottom:20px!important}
 .meta{margin-top:14px!important;gap:10px!important}
 footer{padding-top:10px!important}
+#counter{display:inline-flex!important}
 @media(max-width:960px){.hero{padding-top:12px!important;padding-bottom:30px!important}}
-@media(max-width:600px){
-  .hero{padding:10px 0 64px!important}
-  .card{margin-top:16px!important;padding:22px 18px 16px!important}
-  .meta{margin-top:12px!important;gap:9px!important}
-  .offer{margin-top:16px!important;padding:12px 14px!important}
-  .form{margin-top:14px!important}
-  .fine{margin-top:8px!important}
-}
-@media(max-height:760px) and (min-width:601px){
-  nav{margin-top:12px!important}
-  .hero{padding-top:4px!important;padding-bottom:24px!important}
-  h1{margin-top:14px!important}
-  .lede{margin-top:10px!important}
-  .card{margin-top:14px!important;padding-top:22px!important;padding-bottom:16px!important}
-  .meta{margin-top:10px!important}
-}
+@media(max-width:600px){.hero{padding:10px 0 64px!important}.card{margin-top:16px!important;padding:22px 18px 16px!important}.meta{margin-top:12px!important;gap:9px!important}.offer{margin-top:16px!important;padding:12px 14px!important}.form{margin-top:14px!important}.fine{margin-top:8px!important}}
+@media(max-height:760px) and (min-width:601px){nav{margin-top:12px!important}.hero{padding-top:4px!important;padding-bottom:24px!important}h1{margin-top:14px!important}.lede{margin-top:10px!important}.card{margin-top:14px!important;padding-top:22px!important;padding-bottom:16px!important}.meta{margin-top:10px!important}}
 `;
     const patched=html.replace('</style>',polish+'\\n</style>');
     document.open();document.write(patched);document.close();
