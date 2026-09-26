@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guidr · Join the waitlist</title></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guidr · Join the waitlist</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=1">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
 <body>
 <script>
 fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602496676a0ed052051265d09fcef/index.html')
@@ -88,7 +91,10 @@ footer{display:none!important}
 `;
     const celebrateFn='function celebrate(){if(reduced)return;var c=$("counter");c.classList.remove("celebrate");void c.offsetWidth;c.classList.add("celebrate");var p=document.createElement("span");p.className="plus1";p.textContent="+1";c.appendChild(p);setTimeout(function(){p.remove();},1200);}\n';
     const newJoin='roll(Number.isFinite(res.total) ? res.total : shown + 1);';
+    /* Favicon: the rewritten page's own icon tag starts with an empty href, which
+       made the tab fall back to a globe. Point it at the real file from the start. */
     const patched=html.replace('const MIN_SHOW = 1;','const MIN_SHOW = 0;').replace('loadCount();','roll(0); loadCount();').replace('</style>',fixes+'\n</style>')
+      .replace('<link rel="icon" id="fav" type="image/svg+xml" href="">','<link rel="icon" id="fav" type="image/svg+xml" href="favicon.svg?v=1">')
       .replace('function say(',()=>celebrateFn+'function say(')
       .replace(newJoin,()=>newJoin+' celebrate();');
     document.open();document.write(patched);document.close();
