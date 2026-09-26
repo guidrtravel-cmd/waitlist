@@ -21,6 +21,58 @@ footer{display:none!important}
 .msg:not(:empty){margin-top:12px;line-height:1.4}
 .card:has(.msg:not(:empty)) .fine{display:none}
 @media(max-width:600px){.msg:not(:empty){margin-top:7px!important;font-size:13px}}
+
+/* ---------- glass v2 ----------
+   Frosted, not tinted: heavy blur with only a touch of saturation, so the card reads
+   as a slab of milky glass over the photo instead of a bright cyan panel.
+   Thickness comes from the edge: a bright top lip, a soft inner glow all round
+   (the bevel), and a hairline rim that catches a faint prism of colour.
+   Everything lives in box-shadow + ::before, so ::after stays free for the counter. */
+.glass{
+  background:
+    radial-gradient(130% 90% at 15% -10%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 55%),
+    linear-gradient(180deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.07) 60%,rgba(255,255,255,.11) 100%);
+  -webkit-backdrop-filter:blur(26px) saturate(1.2) brightness(1.03);
+  backdrop-filter:blur(26px) saturate(1.2) brightness(1.03);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.75),
+    inset 0 -1px 0 rgba(255,255,255,.22),
+    inset 0 0 0 1px rgba(255,255,255,.14),
+    inset 0 0 22px 2px rgba(255,255,255,.14),
+    inset 0 10px 24px -14px rgba(255,255,255,.45),
+    0 1px 2px rgba(3,20,60,.10),
+    0 26px 56px -24px rgba(3,20,60,.55);
+}
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  padding:1.25px;
+  background:conic-gradient(from 200deg at 50% 50%,
+    rgba(255,255,255,.95) 0deg,
+    rgba(186,222,255,.55) 30deg,
+    rgba(255,206,236,.40) 55deg,
+    rgba(255,255,255,.12) 95deg,
+    rgba(255,255,255,.06) 160deg,
+    rgba(206,255,236,.30) 215deg,
+    rgba(255,232,196,.38) 250deg,
+    rgba(255,255,255,.75) 310deg,
+    rgba(255,255,255,.95) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+}
+.glass.sm{
+  -webkit-backdrop-filter:blur(14px) saturate(1.2) brightness(1.04);
+  backdrop-filter:blur(14px) saturate(1.2) brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.75),
+    inset 0 -1px 0 rgba(255,255,255,.2),
+    inset 0 0 0 1px rgba(255,255,255,.14),
+    inset 0 0 12px 1px rgba(255,255,255,.14),
+    0 1px 2px rgba(3,20,60,.10),
+    0 10px 24px -12px rgba(3,20,60,.5);
+}
+.glass.sm::before{padding:1px}
+
 /* Orange counter number + celebration when someone signs up.
    The pill itself is never given a new animation: it already has its entrance
    animation, and swapping that out and back replays the entrance (the jump). */
