@@ -88,18 +88,9 @@ footer{display:none!important}
 `;
     const celebrateFn='function celebrate(){if(reduced)return;var c=$("counter");c.classList.remove("celebrate");void c.offsetWidth;c.classList.add("celebrate");var p=document.createElement("span");p.className="plus1";p.textContent="+1";c.appendChild(p);setTimeout(function(){p.remove();},1200);}\n';
     const newJoin='roll(Number.isFinite(res.total) ? res.total : shown + 1);';
-    /* Gmail only. The server (join_waitlist) refuses anything else with error
-       "gmail_only"; this check just gives the message before the round trip. */
-    const GMAIL_MSG='Only Gmail addresses for now. Use your @gmail.com.';
-    const validLine="if (!EMAIL_RE.test(email)){ say('err', 'Enter a valid email address.'); input.focus(); return; }";
-    const gmailLine=" if (!email.endsWith('@gmail.com')){ say('err', '"+GMAIL_MSG+"'); input.focus(); return; }";
-    const errLine="if (e === 'invalid_email')";
     const patched=html.replace('const MIN_SHOW = 1;','const MIN_SHOW = 0;').replace('loadCount();','roll(0); loadCount();').replace('</style>',fixes+'\n</style>')
       .replace('function say(',()=>celebrateFn+'function say(')
-      .replace(newJoin,()=>newJoin+' celebrate();')
-      .replace('placeholder="you@email.com"','placeholder="you@gmail.com"')
-      .replace(validLine,()=>validLine+gmailLine)
-      .replace(errLine,()=>"if (e === 'gmail_only') say('err', '"+GMAIL_MSG+"');\n    else "+errLine);
+      .replace(newJoin,()=>newJoin+' celebrate();');
     document.open();document.write(patched);document.close();
   })
   .catch(()=>{document.body.textContent='Guidr is loading. Please refresh.'});
