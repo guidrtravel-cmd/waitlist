@@ -11,18 +11,26 @@ fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602
   .then(r=>r.text())
   .then(html=>{
     const glassFix=`
-/* unified ocean-glass treatment */
-.glass{
-  background:rgba(22,48,73,.42)!important;
-  -webkit-backdrop-filter:blur(22px) saturate(1.35)!important;
-  backdrop-filter:blur(22px) saturate(1.35)!important;
-  border:1px solid rgba(225,244,255,.58)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -18px 34px rgba(7,28,52,.12),0 18px 40px -20px rgba(2,18,42,.58)!important;
+/* Guidr glass system: one material, three elevations */
+:root{--glass-fill:rgba(129,205,255,.20);--glass-edge:rgba(235,249,255,.62);--glass-shadow:rgba(3,29,70,.28)}
+.glass,.glass.sm{
+  position:relative!important;
+  background:var(--glass-fill)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.35)!important;
+  backdrop-filter:blur(16px) saturate(1.35)!important;
+  border:1px solid var(--glass-edge)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.52),
+    inset 0 -1px 0 rgba(52,143,219,.20),
+    0 14px 34px -18px var(--glass-shadow)!important;
 }
-.glass::before{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,0) 48%)!important}
-.card{background:rgba(22,48,73,.42)!important}
-.offer{background:rgba(28,62,91,.34)!important;border:1px solid rgba(225,244,255,.5)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.24),inset 0 -12px 24px rgba(7,28,52,.1)!important}
-#counter{display:inline-flex!important}
+.glass::before{content:""!important;position:absolute!important;inset:0!important;border-radius:inherit!important;pointer-events:none!important;z-index:-1!important;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,0) 52%)!important}
+.card{background:rgba(111,194,248,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.58),inset 0 -1px 0 rgba(31,116,194,.18),0 22px 48px -22px rgba(3,29,70,.38)!important}
+.offer{background:rgba(111,194,248,.18)!important;border:1px solid rgba(235,249,255,.54)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(31,116,194,.16)!important}
+.form input{background:rgba(4,44,100,.30)!important;border:1px solid rgba(235,249,255,.24)!important}
+#counter{display:inline-flex!important;height:40px!important;background:rgba(129,205,255,.20)!important}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.sm{background:rgba(26,102,184,.84)!important}}
+@media(prefers-reduced-transparency:reduce){.glass,.glass.sm{background:rgba(26,102,184,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
 `;
     const patched=html.replace('</style>',glassFix+'\\n</style>');
     document.open();document.write(patched);document.close();
