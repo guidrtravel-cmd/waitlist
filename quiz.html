@@ -7,14 +7,14 @@
 <style>html,body{margin:0;min-height:100%;background:#0B43B5}body{font-family:Inter,system-ui,sans-serif}</style>
 </head><body><script>
 (function(){
-var source='https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/c0965610885c6c08ad3d41c1f29d0b22e441ba63/quiz.html?v=202609262225';
+var source='https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/6f84e95aaafef019df1fc2c708a1bad4a164b863/quiz.html?v=202609262237';
 fetch(source,{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('load');return r.text();}).then(function(html){
-html=html.replace('<title>Guidr · What kind of traveler are you?</title>','<title>Guidr · Help shape travel planning</title>');
-html=html.replace('What kind of traveler are you?','Help shape Guidr');
+html=html.replace('Take the 60-sec travel quiz','Help shape Guidr');
+html=html.replace('60-second quiz','Help shape Guidr');
 html=html.replace('The travel app that learns <em>how you travel.</em>','Help shape the future of travel planning.');
-html=html.replace('Find your travel type in 60 seconds, help us build Guidr, and get <b>1 month free</b> at launch.','Tell us how you plan trips today. It takes about 2 minutes, and everyone who completes it can join early access and get <b>1 month of Guidr Premium free</b> at launch.');
-html=html.replace('Find my travel type →','Start the survey →');
-html=html.replace('60 seconds · just taps, no typing','2 minutes · just taps, no typing');
+html=html.replace('Help us build it. Take a 60-sec quiz and get <b>1 month free</b> when Guidr launches.','Tell us how you plan trips today. It takes about 2 minutes, and everyone who completes it can join early access and get <b>1 month of Guidr Premium free</b> at launch.');
+html=html.replace('Start the quiz →','Start the survey →');
+html=html.replace('12 quick taps · no signup until the end','2 minutes · just taps, no signup until the end');
 html=html.replace(/var QUESTIONS = \[[\s\S]*?\n\];\nvar MAIN_COUNT/,'var QUESTIONS = [\n'+
 "  { id:'problem', q:'What is the biggest problem you have when planning a trip?', opts:[['match','Finding places that match what I like'],['itinerary','Turning saved ideas into a real itinerary'],['organize','Organizing information from different apps'],['logistics','Planning around distance, timing, cost, and opening hours'],['group','Getting friends or family to agree'],['none','I don’t usually have a problem']]},\n"+
 "  { id:'frequency', q:'How often do you experience that problem?', opts:[['every','Every trip'],['most','Most trips'],['some','Some trips'],['rare','Rarely'],['never','Never']]},\n"+
@@ -28,7 +28,7 @@ html=html.replace(/var QUESTIONS = \[[\s\S]*?\n\];\nvar MAIN_COUNT/,'var QUESTIO
 html=html.replace(/function flow\(\)\{[\s\S]*?\n\}/,"function flow(){ var f=[]; QUESTIONS.forEach(function(q){ f.push(q.id); }); f.push('email'); return f; }");
 html=html.replace(/function emailHTML\(\)\{[\s\S]*?\n\}/,"function emailHTML(){ return '<div class=\"center\" style=\"padding-bottom:0\"><div class=\"big\">🎉</div><h2 class=\"q\">Join Guidr early</h2><p class=\"sub\">Enter your email to join the early-access list and get <b style=\"color:#FFC98F\">1 month free</b> when Guidr launches.</p></div><form class=\"form\" id=\"form\" novalidate><input type=\"email\" id=\"email\" placeholder=\"you@email.com\" autocomplete=\"email\" inputmode=\"email\" aria-label=\"Email address\" required><button type=\"submit\" class=\"cta\" id=\"sendBtn\">Join the early-access list</button></form><p class=\"msg\" id=\"msg\" role=\"status\"></p><p class=\"fine\">Your free-month code is sent when Guidr launches. No spam. <a href=\"privacy.html\">Privacy</a></p>'; }");
 html=html.replace(/function doneHTML\(already\)\{[\s\S]*?\n\}/,"function doneHTML(already){ return '<div class=\"center\"><div class=\"big\">🎉</div><h2 class=\"q\">You’re on the list.</h2><p class=\"sub\">Thanks for helping us build Guidr. Your 1-month Premium reward will be sent when Guidr launches.</p></div><button type=\"button\" class=\"cta next\" id=\"shareBtn\">Send it to a friend</button><p class=\"msg\" id=\"msg\" role=\"status\"></p>'; }");
-html=html.replace('Show my type + free month','Join the early-access list');
+html=html.replace('Claim my free month','Join the early-access list');
 html=html.replace('var state = load() || { a:{}, i:0, t0:0, done:false };','var state = { a:{}, i:0, t0:0, done:false };');
 document.open();document.write(html);document.close();}).catch(function(){document.body.textContent='Guidr is loading. Please refresh.';});})();
 </script></body></html>
