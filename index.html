@@ -10,29 +10,88 @@
 fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602496676a0ed052051265d09fcef/index.html')
   .then(r=>r.text())
   .then(html=>{
-    const glassFix=`
-/* Guidr glass system: one material, three elevations */
-:root{--glass-fill:rgba(129,205,255,.20);--glass-edge:rgba(235,249,255,.62);--glass-shadow:rgba(3,29,70,.28)}
-.glass,.glass.sm{
+    const polish=`
+/* Guidr material pass: distinct elevations, no muddy glass-on-glass stacking */
+:root{
+  --glass-regular:rgba(14,62,126,.30);
+  --glass-thin:rgba(30,92,165,.20);
+  --glass-inset:rgba(3,39,91,.18);
+  --glass-rim:rgba(238,249,255,.58);
+  --glass-rim-soft:rgba(238,249,255,.28);
+  --glass-shadow:rgba(2,20,60,.34);
+}
+.glass{
   position:relative!important;
-  background:var(--glass-fill)!important;
-  -webkit-backdrop-filter:blur(16px) saturate(1.35)!important;
-  backdrop-filter:blur(16px) saturate(1.35)!important;
-  border:1px solid var(--glass-edge)!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  background:var(--glass-thin)!important;
+  border:1px solid var(--glass-rim-soft)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.45)!important;
+  backdrop-filter:blur(12px) saturate(1.45)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.46),
+    inset 0 -1px 0 rgba(2,28,72,.18),
+    0 10px 26px -16px var(--glass-shadow)!important;
+}
+.glass::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+  border-radius:inherit!important;
+  background:linear-gradient(142deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.035) 34%,rgba(0,35,92,.08) 100%)!important;
+}
+.glass.sm{
+  background:var(--glass-thin)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.35)!important;
+  backdrop-filter:blur(10px) saturate(1.35)!important;
+  border-color:var(--glass-rim)!important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.52),
-    inset 0 -1px 0 rgba(52,143,219,.20),
-    0 14px 34px -18px var(--glass-shadow)!important;
+    inset 0 -1px 0 rgba(2,28,72,.16),
+    0 8px 22px -14px var(--glass-shadow)!important;
 }
-.glass::before{content:""!important;position:absolute!important;inset:0!important;border-radius:inherit!important;pointer-events:none!important;z-index:-1!important;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,0) 52%)!important}
-.card{background:rgba(111,194,248,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.58),inset 0 -1px 0 rgba(31,116,194,.18),0 22px 48px -22px rgba(3,29,70,.38)!important}
-.offer{background:rgba(111,194,248,.18)!important;border:1px solid rgba(235,249,255,.54)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(31,116,194,.16)!important}
-.form input{background:rgba(4,44,100,.30)!important;border:1px solid rgba(235,249,255,.24)!important}
-#counter{display:inline-flex!important;height:40px!important;background:rgba(129,205,255,.20)!important}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.sm{background:rgba(26,102,184,.84)!important}}
-@media(prefers-reduced-transparency:reduce){.glass,.glass.sm{background:rgba(26,102,184,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+.card{
+  background:var(--glass-regular)!important;
+  border:1px solid var(--glass-rim)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -18px 30px rgba(2,28,72,.11),
+    0 24px 52px -24px rgba(2,20,60,.48)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.5)!important;
+  backdrop-filter:blur(20px) saturate(1.5)!important;
+}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:31px;
+  pointer-events:none;
+  border-top:1px solid rgba(255,255,255,.24);
+  border-left:1px solid rgba(255,255,255,.12);
+}
+.offer{
+  position:relative!important;
+  background:rgba(86,174,242,.15)!important;
+  border:1px solid rgba(235,249,255,.42)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -8px 18px rgba(4,44,96,.08)!important;
+}
+.offer::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(110deg,rgba(255,255,255,.10),transparent 42%);
+}
+.form input{
+  background:rgba(3,34,82,.34)!important;
+  border:1px solid rgba(220,242,255,.22)!important;
+  box-shadow:inset 0 2px 7px rgba(2,20,60,.30),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+#counter{display:inline-flex!important;height:40px!important}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.sm{background:rgba(18,73,150,.86)!important}.card{background:rgba(18,73,150,.90)!important}}
+@media(prefers-reduced-transparency:reduce){.glass,.glass.sm,.card{background:rgba(18,73,150,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+@media(max-width:480px){.card::after{border-radius:27px}}
 `;
-    const patched=html.replace('</style>',glassFix+'\\n</style>');
+    const patched=html.replace('</style>',polish+'\\n</style>');
     document.open();document.write(patched);document.close();
   })
   .catch(()=>{document.body.textContent='Guidr is loading. Please refresh.'});
