@@ -88,6 +88,43 @@ footer{display:none!important}
 @keyframes cring{to{box-shadow:0 0 0 14px rgba(255,138,42,0)}}
 @keyframes cplus{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
 }
+
+/* ---------- mobile ----------
+   Same content, same order, just sized for a phone. Two real bugs fixed here:
+   1. The hero was vertically centred inside a box shorter than its content, so the
+      overflow went UP and the pill slid over the logo. safe center stops that.
+   2. Everything was desktop-sized, so the stores row fell off the bottom.
+   If a very short phone still can't fit it, the page scrolls instead of cutting off. */
+@media(max-width:600px){
+  html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+  .stage,.page{height:auto!important;min-height:100svh!important;overflow:visible!important}
+  .page{padding:0 16px!important}
+  nav{margin-top:10px!important;height:40px!important}
+  .brand{height:40px!important;gap:8px!important}
+  .brand .icon{width:32px!important;height:32px!important}
+  .brand .word{height:36px!important;width:62px!important;margin-top:6px!important}
+  .x{width:40px!important;height:40px!important}
+  .hero{justify-content:safe center!important;padding-top:14px!important;padding-bottom:max(14px,env(safe-area-inset-bottom))!important}
+  .pill{padding:7px 13px 7px 11px!important;font-size:10.5px!important;letter-spacing:.15em!important}
+  h1{margin-top:12px!important;font-size:clamp(38px,11vw,46px)!important;line-height:1!important}
+  .lede{margin-top:8px!important;font-size:14.5px!important;line-height:1.5!important;max-width:340px!important}
+  .card{margin-top:14px!important;padding:16px 16px 11px!important;border-radius:26px!important}
+  .card h2{font-size:26px!important}
+  .card .csub{margin-top:4px!important;font-size:13px!important}
+  .offer{margin-top:11px!important;padding:10px 12px!important;gap:11px!important;border-radius:16px!important}
+  .offer .ico{width:36px!important;height:36px!important;border-radius:12px!important}
+  .offer .ico svg{width:19px!important;height:19px!important}
+  .offer b{font-size:14px!important}
+  .offer span{font-size:12.5px!important;line-height:1.4!important}
+  .form{margin-top:11px!important;gap:8px!important}
+  .form input,.form button{height:48px!important;border-radius:24px!important}
+  .form input{font-size:16px!important;padding:0 18px!important}
+  .fine{margin-top:7px!important;font-size:11.5px!important}
+  .meta{margin-top:10px!important;gap:8px!important}
+  .counter{height:36px!important;padding:0 16px!important;font-size:13.5px!important}
+  .stores{font-size:13px!important;gap:8px 14px!important}
+  .store svg{width:15px!important;height:15px!important}
+}
 `;
     const celebrateFn='function celebrate(){if(reduced)return;var c=$("counter");c.classList.remove("celebrate");void c.offsetWidth;c.classList.add("celebrate");var p=document.createElement("span");p.className="plus1";p.textContent="+1";c.appendChild(p);setTimeout(function(){p.remove();},1200);}\n';
     const newJoin='roll(Number.isFinite(res.total) ? res.total : shown + 1);';
