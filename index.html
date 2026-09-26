@@ -16,6 +16,11 @@ footer{display:none!important}
 .card{margin-top:12px!important;padding-top:20px!important;padding-bottom:12px!important}
 .meta{display:flex!important;visibility:visible!important;opacity:1!important;margin-top:8px!important;gap:6px!important}
 @media(max-width:600px){nav{margin-top:10px!important}.hero{padding-top:4px!important;padding-bottom:18px!important}h1{margin-top:14px!important}.lede{margin-top:10px!important}.card{margin-top:12px!important;padding:20px 18px 12px!important}.offer{margin-top:12px!important;padding:11px 13px!important}.form{margin-top:11px!important}.fine{margin-top:7px!important}.meta{margin-top:7px!important;gap:6px!important}}
+/* The status message replaces the fine-print line instead of adding a new row,
+   so signing up never makes the page taller (which pushed the stores off-screen). */
+.msg:not(:empty){margin-top:12px;line-height:1.4}
+.card:has(.msg:not(:empty)) .fine{display:none}
+@media(max-width:600px){.msg:not(:empty){margin-top:7px!important;font-size:13px}}
 /* Orange counter number + celebration when someone signs up.
    The pill itself is never given a new animation: it already has its entrance
    animation, and swapping that out and back replays the entrance (the jump). */
