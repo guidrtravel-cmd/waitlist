@@ -76,8 +76,8 @@ footer{display:none!important}
 }
 .glass.sm::before{padding:1px}
 
-/* Hide the G icon in the nav, show only the wordmark. */
-.brand .icon{display:none!important}
+/* Hide the G icon in the nav, show only the wordmark (desktop AND mobile). */
+.brand .icon,#logoIcon,nav .brand svg.icon{display:none!important;width:0!important;height:0!important}
 
 /* Orange counter number + celebration when someone signs up.
    The pill itself is never given a new animation: it already has its entrance
@@ -104,7 +104,7 @@ footer{display:none!important}
   .page{padding:0 16px!important}
   nav{margin-top:10px!important;height:40px!important}
   .brand{height:40px!important;gap:8px!important}
-  .brand .icon{width:32px!important;height:32px!important}
+  .brand .icon,#logoIcon{display:none!important;width:0!important;height:0!important}
   .brand .word{height:36px!important;width:62px!important;margin-top:6px!important}
   .x{width:40px!important;height:40px!important}
   .hero{justify-content:safe center!important;padding-top:14px!important;padding-bottom:max(14px,env(safe-area-inset-bottom))!important}
@@ -135,6 +135,7 @@ footer{display:none!important}
        made the tab fall back to a globe. Point it at the real file from the start. */
     const patched=html.replace('const MIN_SHOW = 1;','const MIN_SHOW = 0;').replace('loadCount();','roll(0); loadCount();').replace('</style>',fixes+'\n</style>')
       .replace('<link rel="icon" id="fav" type="image/svg+xml" href="">','<link rel="icon" id="fav" type="image/svg+xml" href="favicon.svg?v=1">')
+      .replace('<svg class="icon" id="logoIcon" aria-hidden="true"','<svg class="icon" id="logoIcon" aria-hidden="true" style="display:none"')
       .replace('function say(',()=>celebrateFn+'function say(')
       .replace(newJoin,()=>newJoin+' celebrate();');
     document.open();document.write(patched);document.close();
