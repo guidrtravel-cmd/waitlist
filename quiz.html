@@ -1,12 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Guidr · What kind of traveler are you?</title>
-<meta name="description" content="Find your travel type in 60 seconds and help us build Guidr.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=1">
 <meta name="theme-color" content="#0B43B5">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=1">
 <style>html,body{margin:0;min-height:100%;background:#0B43B5}body{font-family:Inter,system-ui,sans-serif}</style>
 </head>
 <body>
@@ -15,12 +14,13 @@
   var source='https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/c0965610885c6c08ad3d41c1f29d0b22e441ba63/quiz.html';
   fetch(source).then(function(r){if(!r.ok)throw Error('load');return r.text();}).then(function(html){
     var counterPatch='<div class="counter glass sm" id="counter"><span class="dot"></span><span><b id="count">0</b> <span id="countLabel">travelers visited</span></span></div>';
-    var xPatch='<div class="nav-actions">'+counterPatch+'<a class="x glass sm" href="https://x.com/guidrtravel" target="_blank" rel="noopener" aria-label="Guidr on X"><svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.2L24 22.8h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.2h7.6l5.2 6.9zm-1.3 19.4h2L6.5 3.3H4.3z"/></svg></a></div>';
+    var xPatch='<div class="nav-actions">'+counterPatch+'<a class="x glass sm" href="https://x.com/guidrtravel" target="_blank" rel="noopener" aria-label="Guidr on X"><svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.2L6.5 3.3h7.4l5.8 7.6 6.7-7.6h3.7l-8.6 9.9L24 22.8h-7.6l-5.2-6.9-5.2 6.9H2.3l8.1-9.2L0 1.2h7.4l5.8 7.6z"/></svg></a></div>';
     var css='<style>nav{position:relative}.nav-actions{position:absolute;top:0;right:0;display:flex!important;align-items:center!important;gap:10px!important;width:max-content!important;max-width:calc(100vw - 32px)!important}.nav-actions .counter{display:inline-flex!important;flex:0 1 auto!important;max-width:calc(100vw - 126px)!important;overflow:hidden!important}.nav-actions .counter>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nav-actions .x{display:flex!important;flex:0 0 44px!important}.meta #counter{display:none!important}.opts.grid2 .opt:last-child:nth-child(odd){grid-column:1 / -1;width:50%;justify-self:center}.done-title{font-family:Instrument Serif,Georgia,serif;font-size:38px;line-height:1.05;margin-top:10px}.done-copy{max-width:380px;margin:10px auto 0;color:rgba(255,255,255,.86);font-size:15px;line-height:1.55}.done-kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.78)}@media(max-width:600px){.nav-actions{gap:7px!important}.nav-actions .counter{height:40px;padding:0 10px;font-size:12px}.nav-actions .x{flex-basis:40px;width:40px;height:40px}.opts.grid2 .opt:last-child:nth-child(odd){width:100%}}@media(max-width:360px){.nav-actions .counter{font-size:11px;padding:0 8px;max-width:82px}.nav-actions .counter #countLabel{display:none}}</style>';
     html=html.replace('</style>',css+'</style>');
     html=html.replace(/<div class="counter glass sm" id="counter">[\s\S]*?<\/div>\s*/, '');
     html=html.replace('  </nav>', '    '+xPatch+'\n  </nav>');
     html=html.replace('var state = load() || { a:{}, i:0, t0:0, done:false };','var state = { a:{}, i:0, t0:0, done:false };');
+    html=html.replace("var HALFWAY_AFTER = 'style';", "var HALFWAY_AFTER = 'age';");
     html=html.replace(/\{ id:'style',[\s\S]*?\}\s*,\s*\{ id:'pain'/, "{ id:'pain'");
     html=html.replace(/\{ id:'beta',[\s\S]*?\}\s*\]\);/, "{ id:'beta', q:'Want to test Guidr early, before it launches?', opts:[['yes','Yes'],['no','No']] }\n];");
     html=html.replace(/function halfHTML\(\)\{[\s\S]*?\n\}/, "function halfHTML(){ return '<div class=\"center half\"><div class=\"big\">✈️</div><h2 class=\"q\">Halfway there!</h2><div class=\"ring\"><i></i></div></div>'; }");
