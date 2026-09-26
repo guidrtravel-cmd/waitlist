@@ -135,7 +135,6 @@ footer{display:none!important}
        made the tab fall back to a globe. Point it at the real file from the start. */
     const patched=html.replace('const MIN_SHOW = 1;','const MIN_SHOW = 0;').replace('loadCount();','roll(0); loadCount();').replace('</style>',fixes+'\n</style>')
       .replace('<link rel="icon" id="fav" type="image/svg+xml" href="">','<link rel="icon" id="fav" type="image/svg+xml" href="favicon.svg?v=1">')
-      .replace('<svg class="icon" id="logoIcon" aria-hidden="true"','<svg class="icon" id="logoIcon" aria-hidden="true" style="display:none"')
       .replace('function say(',()=>celebrateFn+'function say(')
       .replace(newJoin,()=>newJoin+' celebrate();');
     document.open();document.write(patched);document.close();
