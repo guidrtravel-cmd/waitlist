@@ -6,7 +6,7 @@
 fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602496676a0ed052051265d09fcef/index.html')
   .then(r=>r.text())
   .then(html=>{
-    const patched=html.replace('© 2026 Guidr · <a href="https://x.com/guidrtravel"','Guidr · <a href="https://x.com/guidrtravel"');
+    const patched=html.replace('© 2026 ', '');
     document.open();document.write(patched);document.close();
   })
   .catch(()=>{document.body.textContent='Guidr is loading. Please refresh.'});
