@@ -19,6 +19,7 @@
     html=html.replace('</style>',css+'</style>');
     html=html.replace(/<div class="counter glass sm" id="counter">[\s\S]*?<\/div>\s*/, '');
     html=html.replace('  </nav>', '    '+xPatch+'\n  </nav>');
+    html=html.replace('Find my travel type →','Join the waitlist →');
     html=html.replace('var state = load() || { a:{}, i:0, t0:0, done:false };','var state = { a:{}, i:0, t0:0, done:false };');
     html=html.replace(/function flow\(\)\{[\s\S]*?\n\}/, "function flow(){ var f=[]; QUESTIONS.forEach(function(q){ if(q.id==='style') return; if(q.id==='price' && (!state.a.pay || state.a.pay==='free')) return; f.push(q.id); if(q.id==='pain') f.push('half'); }); f.push('email'); return f; }");
     html=html.replace(/function halfHTML\(\)\{[\s\S]*?\n\}/, "function halfHTML(){ return '<div class=\"center half\"><div class=\"big\">✈️</div><h2 class=\"q\">Halfway there!</h2></div>'; }");
