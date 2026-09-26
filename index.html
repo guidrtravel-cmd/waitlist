@@ -11,15 +11,85 @@ fetch('https://raw.githubusercontent.com/guidrtravel-cmd/waitlist/cb2529ebf62602
   .then(r=>r.text())
   .then(html=>{
     const polish=`
-/* Above-the-fold layout pass */
-.hero{padding:8px 0 34px!important}
-.card{margin-top:20px!important;padding-top:26px!important;padding-bottom:20px!important}
-.meta{margin-top:14px!important;gap:10px!important}
-footer{padding-top:10px!important}
-#counter{display:inline-flex!important}
-@media(max-width:960px){.hero{padding-top:12px!important;padding-bottom:30px!important}}
-@media(max-width:600px){.hero{padding:10px 0 64px!important}.card{margin-top:16px!important;padding:22px 18px 16px!important}.meta{margin-top:12px!important;gap:9px!important}.offer{margin-top:16px!important;padding:12px 14px!important}.form{margin-top:14px!important}.fine{margin-top:8px!important}}
-@media(max-height:760px) and (min-width:601px){nav{margin-top:12px!important}.hero{padding-top:4px!important;padding-bottom:24px!important}h1{margin-top:14px!important}.lede{margin-top:10px!important}.card{margin-top:14px!important;padding-top:22px!important;padding-bottom:16px!important}.meta{margin-top:10px!important}}
+/* Guidr material pass: distinct elevations, no muddy glass-on-glass stacking */
+:root{
+  --glass-regular:rgba(14,62,126,.30);
+  --glass-thin:rgba(30,92,165,.20);
+  --glass-inset:rgba(3,39,91,.18);
+  --glass-rim:rgba(238,249,255,.58);
+  --glass-rim-soft:rgba(238,249,255,.28);
+  --glass-shadow:rgba(2,20,60,.34);
+}
+.glass{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  background:var(--glass-thin)!important;
+  border:1px solid var(--glass-rim-soft)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.45)!important;
+  backdrop-filter:blur(12px) saturate(1.45)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.46),
+    inset 0 -1px 0 rgba(2,28,72,.18),
+    0 10px 26px -16px var(--glass-shadow)!important;
+}
+.glass::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+  border-radius:inherit!important;
+  background:linear-gradient(142deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.035) 34%,rgba(0,35,92,.08) 100%)!important;
+}
+.glass.sm{
+  background:var(--glass-thin)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.35)!important;
+  backdrop-filter:blur(10px) saturate(1.35)!important;
+  border-color:var(--glass-rim)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.52),
+    inset 0 -1px 0 rgba(2,28,72,.16),
+    0 8px 22px -14px var(--glass-shadow)!important;
+}
+.card{
+  background:var(--glass-regular)!important;
+  border:1px solid var(--glass-rim)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -18px 30px rgba(2,28,72,.11),
+    0 24px 52px -24px rgba(2,20,60,.48)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.5)!important;
+  backdrop-filter:blur(20px) saturate(1.5)!important;
+}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:31px;
+  pointer-events:none;
+  border-top:1px solid rgba(255,255,255,.24);
+  border-left:1px solid rgba(255,255,255,.12);
+}
+.offer{
+  position:relative!important;
+  background:rgba(86,174,242,.15)!important;
+  border:1px solid rgba(235,249,255,.42)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -8px 18px rgba(4,44,96,.08)!important;
+}
+.offer::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(110deg,rgba(255,255,255,.10),transparent 42%);
+}
+.form input{
+  background:rgba(3,34,82,.34)!important;
+  border:1px solid rgba(220,242,255,.22)!important;
+  box-shadow:inset 0 2px 7px rgba(2,20,60,.30),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+#counter{display:inline-flex!important;height:40px!important}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.glass.sm{background:rgba(18,73,150,.86)!important}.card{background:rgba(18,73,150,.90)!important}}
+@media(prefers-reduced-transparency:reduce){.glass,.glass.sm,.card{background:rgba(18,73,150,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+@media(max-width:480px){.card::after{border-radius:27px}}
 `;
     const patched=html.replace('</style>',polish+'\\n</style>');
     document.open();document.write(patched);document.close();
